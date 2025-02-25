@@ -189,9 +189,6 @@ int main(int argc, char **argv) {
     vmBasisY[v] = geometry->vertexTangentBasis[v][1];
   }
 
-     auto vField =
-            geometrycentral::pointcloud::PointCloudHeatSolver::PointCloudHeatSolver(cloud*, point_geometry*)
-
 //   auto vField =
 //       geometrycentral::surface::computeVertexConnectionLaplacian(*geometry);
 //   auto vField =
