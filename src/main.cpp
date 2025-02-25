@@ -11,7 +11,6 @@
 #include "polyscope/polyscope.h"
 #include "polyscope/surface_mesh.h"
 
-
 // #include <iostream>
 #include <fstream>
 #include <cstdlib> // getenv
@@ -90,7 +89,15 @@ int main(int argc, char **argv) {
     // std::cout << "basis x for point " << p << " is " << point_geometry->tangentBasis[p][0] << "\n";
   }
 
-  // Set parallel transport oriented (Fazer)
+  // Compute a timescale
+  double meanEdgeLength = 0.;
+  double tCoef = 1.0;
+  double shortTime = 0.0;
+  for (surface::Edge e : point_geometry->tuftedMesh->edges()) {
+    meanEdgeLength += point_geometry->tuftedGeom->edgeLengths[e];
+  }
+  meanEdgeLength /= point_geometry->tuftedMesh->nEdges();
+  shortTime = tCoef * meanEdgeLength * meanEdgeLength;
 
   // Set laplacian
   point_geometry->requireLaplacian();
@@ -100,16 +107,15 @@ int main(int argc, char **argv) {
   point_geometry->requireConnectionLaplacian();
   Eigen::SparseMatrix<double> cL = point_geometry->connectionLaplacian;
 
-  // Set direction field
-  auto dField = geometrycentral::surface::computeSmoothestVertexDirectionField(*geometry);
+  // Set mass matrix
+  point_geometry->tuftedGeom->requireVertexLumpedMassMatrix();
+  Eigen::SparseMatrix<double> massMat = point_geometry->tuftedGeom->vertexLumpedMassMatrix; // Mass matrix
 
-//   // Copy the result to a VertexData vector
-//   geometry->requireVertexIndices();
-//   VertexData<Vector2> toReturn(*mesh);
-//   for (Vertex v : mesh->vertices()) {
-//     toReturn[v] = Vector2::fromComplex(cL(geometry->vertexIndices[v]));
-//     toReturn[v] = unit(toReturn[v]);
-//   }
+  Eigen::SparseMatrix<double> massMatcomplex = complexToReal(massMat.cast<std::complex<double>>().eval());
+
+  // Set operator
+  Eigen::SparseMatrix<double> vectorOp = massMatcomplex + shortTime * cL; // vectorOp = operador M - tL
+  vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp)); 
  
   // get home directory
   std::string homeDir = getenv("HOME");
@@ -180,6 +186,45 @@ int main(int argc, char **argv) {
       std::cerr << "Unable to open file for writing" << std::endl;
   }
 
+  // save mass matrix to file
+  std::ofstream massMatFile(filePath + "/mass_matrix.txt");
+  if (massMatFile.is_open()) {
+      for (int k = 0; k < massMat.outerSize(); ++k) {
+          for (Eigen::SparseMatrix<double>::InnerIterator it(massMat, k); it; ++it) {
+              massMatFile << it.row() << " " << it.col() << " " << it.value() << "\n";
+          }
+      }
+      massMatFile.close();
+  } else {
+      std::cerr << "Unable to open file for writing" << std::endl;
+  }
+
+  // save mass matrix complex to file
+  std::ofstream massMatComplexFile(filePath + "/mass_matrix_complex.txt");
+  if (massMatComplexFile.is_open()) {
+      for (int k = 0; k < massMatcomplex.outerSize(); ++k) {
+          for (Eigen::SparseMatrix<double>::InnerIterator it(massMatcomplex, k); it; ++it) {
+              massMatComplexFile << it.row() << " " << it.col() << " " << it.value() << "\n";
+          }
+      }
+      massMatComplexFile.close();
+  } else {
+      std::cerr << "Unable to open file for writing" << std::endl;
+  }
+
+  // // save operator to file
+  // std::ofstream vectorOpFile(filePath + "/vector_operator.txt");
+  // if (vectorOpFile.is_open()) {
+  //     for (int k = 0; k < vectorOp.outerSize(); ++k) {
+  //         for (Eigen::SparseMatrix<double>::InnerIterator it(vectorOp, k); it; ++it) {
+  //             vectorOpFile << it.row() << " " << it.col() << " " << it.value() << "\n";
+  //         }
+  //     }
+  //     vectorOpFile.close();
+  // } else {
+  //     std::cerr << "Unable to open file for writing" << std::endl;
+  // }
+
   // Set vertex tangent spaces (Mesh)
   geometry->requireVertexTangentBasis();
   VertexData<Vector3> vmBasisX(*mesh);
@@ -189,11 +234,9 @@ int main(int argc, char **argv) {
     vmBasisY[v] = geometry->vertexTangentBasis[v][1];
   }
 
-//   auto vField =
-//       geometrycentral::surface::computeVertexConnectionLaplacian(*geometry);
-//   auto vField =
-//          geometrycentral::surface::computeSmoothestVertexDirectionField(*geometry);
-//   psMesh->addVertexTangentVectorQuantity("VF", vField, vBasisX, vBasisY);
+  // Direction Field
+  auto dField = geometrycentral::surface::computeSmoothestVertexDirectionField(*geometry);
+
   psMesh->addVertexTangentVectorQuantity("Direction Field", dField, vmBasisX, vmBasisY);
   psMesh->addVertexVectorQuantity("Normal", vNormals);
   psMesh->addVertexVectorQuantity("Basis X", vBasisX);

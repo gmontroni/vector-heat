@@ -44,14 +44,14 @@ void PointCloudHeatSolver::ensureHaveVectorHeatSolver() {
   heatDistanceWorker.reset(
       new surface::HeatMethodDistanceSolver(*geom.tuftedGeom, tCoef, false)); // we already have the tufted IDT
 
-  SparseMatrix<double>& Lconn = geom.connectionLaplacian;
-  SparseMatrix<double>& massMat = geom.tuftedGeom->vertexLumpedMassMatrix;
+  SparseMatrix<double>& Lconn = geom.connectionLaplacian;   // Connection Laplacian
+  SparseMatrix<double>& massMat = geom.tuftedGeom->vertexLumpedMassMatrix; // Mass matrix
 
   // Build the operator
-  SparseMatrix<double> vectorOp = complexToReal(massMat.cast<std::complex<double>>().eval()) + shortTime * Lconn;
+  SparseMatrix<double> vectorOp = complexToReal(massMat.cast<std::complex<double>>().eval()) + shortTime * Lconn; // vectorOp = operador M - tL
 
   // Note: since tufted Laplacian is always Delaunay, the connection Laplacian is SPD, and we can use Cholesky
-  vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp));
+  vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp)); // solve do sistema (M - tL)Y = Y0
 
   geom.unrequireConnectionLaplacian();
 }
@@ -89,8 +89,8 @@ PointData<double> PointCloudHeatSolver::extendScalars(const std::vector<std::tup
     rhsVals(ind) = val;
   }
 
-  Vector<double> interpVals = heatDistanceWorker->heatSolver->solve(rhsVals);
-  Vector<double> interpOnes = heatDistanceWorker->heatSolver->solve(rhsOnes);
+  Vector<double> interpVals = heatDistanceWorker->heatSolver->solve(rhsVals);  // Equação 2
+  Vector<double> interpOnes = heatDistanceWorker->heatSolver->solve(rhsOnes);  // Equação 3
   Vector<double> resultArr = (interpVals.array() / interpOnes.array());
 
   PointData<double> result(cloud, resultArr);
