@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
 
   // Set operator
   Eigen::SparseMatrix<double> vectorOp = massMatcomplex + shortTime * cL; // vectorOp = operador M - tL
-  vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp)); 
+  // vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp)); 
  
   // get home directory
   std::string homeDir = getenv("HOME");
