@@ -611,17 +611,6 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/utilities/vector3.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/utilities/vector2.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/vertex_position_geometry.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/direction_fields.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_io.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_element_types.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_element_types.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_position_geometry.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/neighborhoods.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/affine_remapper.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/color_maps.h \
@@ -881,11 +870,21 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/vector_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/vector_quantity.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_position_geometry.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/neighborhoods.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_element_types.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_element_types.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_heat_solver.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/numerical/linear_solvers.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/heat_method_distance.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/surface_point.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/surface_point.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_io.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_color_quantity.h \

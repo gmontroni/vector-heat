@@ -32,6 +32,9 @@ public:
   PointData<Vector2> transportTangentVector(const Point& sourcePoint, const Vector2& sourceVector);
   PointData<Vector2> transportTangentVectors(const std::vector<std::tuple<Point, Vector2>>& sources);
 
+  // Guizinho aqui
+  Vector<std::complex<double>> transportTangentVectorsGM(const std::vector<std::tuple<Point, Vector2>>& sources);
+
   // Compute the logarithmic map from a source point
   PointData<Vector2> computeLogMap(const Point& sourcePoint);
 

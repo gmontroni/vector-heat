@@ -674,17 +674,6 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
   ../deps/geometry-central/include/geometrycentral/utilities/vector3.ipp \
   ../deps/geometry-central/include/geometrycentral/utilities/vector2.ipp \
   ../deps/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp \
-  ../deps/geometry-central/include/geometrycentral/surface/direction_fields.h \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_io.h \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.h \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.h \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.ipp \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.ipp \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/point_position_geometry.h \
-  ../deps/geometry-central/include/geometrycentral/pointcloud/neighborhoods.h \
-  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h \
-  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp \
   ../deps/polyscope/include/polyscope/point_cloud.h \
   ../deps/polyscope/include/polyscope/affine_remapper.h \
   ../deps/polyscope/include/polyscope/render/color_maps.h \
@@ -945,11 +934,21 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
   ../deps/polyscope/include/polyscope/vector_quantity.h \
   ../deps/polyscope/include/polyscope/vector_quantity.ipp \
   ../deps/polyscope/include/polyscope/point_cloud.ipp \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/point_position_geometry.h \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/neighborhoods.h \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.h \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.h \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.ipp \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.ipp \
+  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h \
+  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp \
   ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_heat_solver.h \
   ../deps/geometry-central/include/geometrycentral/numerical/linear_solvers.h \
   ../deps/geometry-central/include/geometrycentral/surface/heat_method_distance.h \
   ../deps/geometry-central/include/geometrycentral/surface/surface_point.h \
   ../deps/geometry-central/include/geometrycentral/surface/surface_point.ipp \
+  ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_io.h \
   ../deps/polyscope/include/polyscope/surface_mesh.h \
   ../deps/polyscope/include/polyscope/surface_mesh_quantity.h \
   ../deps/polyscope/include/polyscope/surface_color_quantity.h \
@@ -972,11 +971,25 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../deps/polyscope/include/polyscope/surface_mesh_quantity.h:
 
+../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_io.h:
+
 ../deps/geometry-central/include/geometrycentral/surface/surface_point.ipp:
 
 ../deps/geometry-central/include/geometrycentral/surface/heat_method_distance.h:
 
 ../deps/geometry-central/include/geometrycentral/numerical/linear_solvers.h:
+
+../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h:
+
+../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.ipp:
+
+../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.ipp:
+
+../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp:
+
+../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.h:
+
+../deps/geometry-central/include/geometrycentral/pointcloud/point_position_geometry.h:
 
 ../deps/polyscope/include/polyscope/point_cloud_vector_quantity.h:
 
@@ -1009,6 +1022,10 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 ../deps/polyscope/deps/glm/glm/gtx/norm.inl:
 
 ../deps/polyscope/deps/glm/glm/gtx/component_wise.inl:
+
+../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.h:
+
+../deps/polyscope/deps/glm/glm/gtx/quaternion.inl:
 
 ../deps/polyscope/deps/glm/glm/ext/quaternion_exponential.hpp:
 
@@ -1279,26 +1296,6 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 ../deps/polyscope/deps/glm/glm/gtc/matrix_access.inl:
 
 ../deps/polyscope/include/polyscope/render/color_maps.h:
-
-../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h:
-
-../deps/geometry-central/include/geometrycentral/pointcloud/point_position_geometry.h:
-
-../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.ipp:
-
-../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.ipp:
-
-../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp:
-
-../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.h:
-
-../deps/polyscope/deps/glm/glm/gtx/quaternion.inl:
-
-../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.h:
-
-../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_io.h:
-
-../deps/geometry-central/include/geometrycentral/surface/direction_fields.h:
 
 ../deps/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp:
 

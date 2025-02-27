@@ -49,6 +49,22 @@ void PointCloudHeatSolver::ensureHaveVectorHeatSolver() {
 
   // Build the operator
   SparseMatrix<double> vectorOp = complexToReal(massMat.cast<std::complex<double>>().eval()) + shortTime * Lconn; // vectorOp = operador M - tL
+  
+  // Salvamento de variável em arquivo
+  std::string homeDir = getenv("HOME");
+  std::string filePath = homeDir + "/Documents/Parallel Transport/verification";
+  std::ofstream vectorOpFile(filePath + "/vectorOp.txt");
+  if (vectorOpFile.is_open()) {
+      for (int k = 0; k < vectorOp.outerSize(); ++k) {
+          for (Eigen::SparseMatrix<double>::InnerIterator it(vectorOp, k); it; ++it) {
+              vectorOpFile << it.row() << " " << it.col() << " " << it.value() << "\n";
+          }
+      }
+      vectorOpFile.close();
+  } else {
+      std::cerr << "Unable to open file for writing vectorOp" << std::endl;
+  }
+  // Fim do salvamento
 
   // Note: since tufted Laplacian is always Delaunay, the connection Laplacian is SPD, and we can use Cholesky
   vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp)); // solve do sistema (M - tL)Y = Y0
@@ -107,6 +123,45 @@ PointData<Vector2> PointCloudHeatSolver::transportTangentVector(const Point& sou
   return transportTangentVectors({std::make_tuple(sourcePoint, sourceVector)});
 }
 
+Vector<std::complex<double>>
+PointCloudHeatSolver::transportTangentVectorsGM(const std::vector<std::tuple<Point, Vector2>>& sources) {
+
+  GC_SAFETY_ASSERT(sources.size() != 0, "must have at least one source");
+
+  ensureHaveVectorHeatSolver();
+
+  // Y0
+  // Construct rhs
+  size_t N = cloud.nPoints(); // número de pontos da nuvem
+  Vector<std::complex<double>> dirRHS = Vector<std::complex<double>>::Zero(N); // vetor complexo de zeros (rhs)
+  bool normsAllSame = true; // flag para verificar se todas as normas são iguais
+  double firstNorm = std::get<1>(sources[0]).norm(); // calcula a norma do primeiro vetor tangente
+  for (size_t i = 0; i < sources.size(); i++) {
+    size_t ind = std::get<0>(sources[i]).getIndex(); // obtém o índice do ponto
+    Vector2 vec = std::get<1>(sources[i]);  // obtém o vetor tangente
+    dirRHS(ind) += std::complex<double>(vec); // adiciona o vetor tangente como complexo ao rhs
+
+    // Check if all norms same
+    double thisNorm = vec.norm();
+    if (std::abs(firstNorm - thisNorm) > std::fmax(firstNorm, thisNorm) * 1e-10) {
+      normsAllSame = false;
+    }
+  }
+  std::string homeDir = getenv("HOME");
+  std::string filePath = homeDir + "/Documents/Parallel Transport/verification";
+  std::ofstream dirRHSFile(filePath + "/Y0complex.txt");
+  if (dirRHSFile.is_open()) {
+      for (size_t i = 0; i < N; i++) {
+          dirRHSFile << dirRHS[i].real() << " " << dirRHS[i].imag() << "\n";
+      }
+      dirRHSFile.close();
+  } else {
+      std::cerr << "Unable to open file for writing dirRHS" << std::endl;
+  }
+
+  return dirRHS;
+}
+
 PointData<Vector2>
 PointCloudHeatSolver::transportTangentVectors(const std::vector<std::tuple<Point, Vector2>>& sources) {
 
@@ -114,15 +169,16 @@ PointCloudHeatSolver::transportTangentVectors(const std::vector<std::tuple<Point
 
   ensureHaveVectorHeatSolver();
 
+  // Y0
   // Consturct rhs
-  size_t N = cloud.nPoints();
-  Vector<std::complex<double>> dirRHS = Vector<std::complex<double>>::Zero(N);
-  bool normsAllSame = true;
-  double firstNorm = std::get<1>(sources[0]).norm();
+  size_t N = cloud.nPoints(); // números de pontos da nuvem
+  Vector<std::complex<double>> dirRHS = Vector<std::complex<double>>::Zero(N); // vetor complexo de zeros (rhs)
+  bool normsAllSame = true; // flag para verificar se todas as normas são iguais
+  double firstNorm = std::get<1>(sources[0]).norm(); // calcula a norma do primeiro vetor tangente
   for (size_t i = 0; i < sources.size(); i++) {
-    size_t ind = std::get<0>(sources[i]).getIndex();
-    Vector2 vec = std::get<1>(sources[i]);
-    dirRHS(ind) += std::complex<double>(vec);
+    size_t ind = std::get<0>(sources[i]).getIndex(); // obtém o índice do ponto
+    Vector2 vec = std::get<1>(sources[i]);  // obtém o vetor tangente
+    dirRHS(ind) += std::complex<double>(vec); // adiciona o vetor tangente como complexo ao rhs
 
     // Check if all norms same
     double thisNorm = vec.norm();
@@ -136,11 +192,33 @@ PointCloudHeatSolver::transportTangentVectors(const std::vector<std::tuple<Point
   // Result is 2N packed complex
   Vector<double> dirInterpPacked = vectorHeatSolver->solve(complexToReal(dirRHS));
 
+  std::string homeDir = getenv("HOME");
+  std::string filePath = homeDir + "/Documents/Parallel Transport/verification";
+  std::ofstream dirInterpPackedFile(filePath + "/Y0real2N.txt");
+  if (dirInterpPackedFile.is_open()) {
+      for (Eigen::Index i = 0; i < dirInterpPacked.size(); i++) {
+          dirInterpPackedFile << dirInterpPacked[i] << "\n";
+      }
+      dirInterpPackedFile.close();
+  } else {
+      std::cerr << "Unable to open file for writing dirInterpPacked" << std::endl;
+  }
+
   // Normalize
   Vector<std::complex<double>> dirInterp = Vector<std::complex<double>>::Zero(N);
   for (size_t i = 0; i < N; i++) {
     Vector2 val{dirInterpPacked(2 * i), dirInterpPacked(2 * i + 1)};
     dirInterp(i) = normalizeCutoff(val);
+  }
+
+  std::ofstream dirInterpFile(filePath + "/Y0normalized.txt");
+  if (dirInterpFile.is_open()) {
+      for (size_t i = 0; i < N; i++) {
+          dirInterpFile << dirInterp[i].real() << " " << dirInterp[i].imag() << "\n";
+      }
+      dirInterpFile.close();
+  } else {
+      std::cerr << "Unable to open file for writing dirInterp" << std::endl;
   }
 
   // Set scale

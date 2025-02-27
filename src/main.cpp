@@ -1,12 +1,10 @@
 #include "geometrycentral/surface/meshio.h"
-// #include "geometrycentral/surface/manifold_surface_mesh.h"
 #include "geometrycentral/surface/vertex_position_geometry.h"
-#include "geometrycentral/surface/direction_fields.h"
 
-#include "geometrycentral/pointcloud/point_cloud_io.h"
 #include "polyscope/point_cloud.h"
 #include "geometrycentral/pointcloud/point_position_geometry.h"
 #include "geometrycentral/pointcloud/point_cloud_heat_solver.h"
+#include "geometrycentral/pointcloud/point_cloud_io.h"
 
 #include "polyscope/polyscope.h"
 #include "polyscope/surface_mesh.h"
@@ -89,15 +87,18 @@ int main(int argc, char **argv) {
     // std::cout << "basis x for point " << p << " is " << point_geometry->tangentBasis[p][0] << "\n";
   }
 
-  // Compute a timescale
-  double meanEdgeLength = 0.;
+  // Create the solver
   double tCoef = 1.0;
-  double shortTime = 0.0;
-  for (surface::Edge e : point_geometry->tuftedMesh->edges()) {
-    meanEdgeLength += point_geometry->tuftedGeom->edgeLengths[e];
-  }
-  meanEdgeLength /= point_geometry->tuftedMesh->nEdges();
-  shortTime = tCoef * meanEdgeLength * meanEdgeLength;
+  PointCloudHeatSolver solver(*cloud, *point_geometry, tCoef);
+
+  // // Compute a timescale
+  // double meanEdgeLength = 0.;
+  // double shortTime = 0.0;
+  // for (surface::Edge e : point_geometry->tuftedMesh->edges()) {
+  //   meanEdgeLength += point_geometry->tuftedGeom->edgeLengths[e];
+  // }
+  // meanEdgeLength /= point_geometry->tuftedMesh->nEdges();
+  // shortTime = tCoef * meanEdgeLength * meanEdgeLength;
 
   // Set laplacian
   point_geometry->requireLaplacian();
@@ -114,8 +115,15 @@ int main(int argc, char **argv) {
   Eigen::SparseMatrix<double> massMatcomplex = complexToReal(massMat.cast<std::complex<double>>().eval());
 
   // Set operator
-  Eigen::SparseMatrix<double> vectorOp = massMatcomplex + shortTime * cL; // vectorOp = operador M - tL
-  // vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp)); 
+  // Eigen::SparseMatrix<double> vectorOp = massMatcomplex + shortTime * cL; // vectorOp = operador M - tL
+  // vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp));
+
+  // Pick a source point
+  Point pSource = cloud->point(7);
+
+  // Compute parallel transport
+  Vector2 sourceVec{1, 1};
+  PointData<Vector2> transport = solver.transportTangentVector(pSource, sourceVec);
  
   // get home directory
   std::string homeDir = getenv("HOME");
@@ -212,32 +220,7 @@ int main(int argc, char **argv) {
       std::cerr << "Unable to open file for writing" << std::endl;
   }
 
-  // // save operator to file
-  // std::ofstream vectorOpFile(filePath + "/vector_operator.txt");
-  // if (vectorOpFile.is_open()) {
-  //     for (int k = 0; k < vectorOp.outerSize(); ++k) {
-  //         for (Eigen::SparseMatrix<double>::InnerIterator it(vectorOp, k); it; ++it) {
-  //             vectorOpFile << it.row() << " " << it.col() << " " << it.value() << "\n";
-  //         }
-  //     }
-  //     vectorOpFile.close();
-  // } else {
-  //     std::cerr << "Unable to open file for writing" << std::endl;
-  // }
-
-  // Set vertex tangent spaces (Mesh)
-  geometry->requireVertexTangentBasis();
-  VertexData<Vector3> vmBasisX(*mesh);
-  VertexData<Vector3> vmBasisY(*mesh);
-  for (Vertex v : mesh->vertices()) {
-    vmBasisX[v] = geometry->vertexTangentBasis[v][0];
-    vmBasisY[v] = geometry->vertexTangentBasis[v][1];
-  }
-
-  // Direction Field
-  auto dField = geometrycentral::surface::computeSmoothestVertexDirectionField(*geometry);
-
-  psMesh->addVertexTangentVectorQuantity("Direction Field", dField, vmBasisX, vmBasisY);
+  psMesh->addVertexTangentVectorQuantity("Parallel Transport", transport, vBasisX, vBasisY);
   psMesh->addVertexVectorQuantity("Normal", vNormals);
   psMesh->addVertexVectorQuantity("Basis X", vBasisX);
   psMesh->addVertexVectorQuantity("Basis Y", vBasisY);
