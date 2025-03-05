@@ -611,7 +611,15 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/utilities/vector3.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/utilities/vector2.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/vertex_position_geometry.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/vector_heat_method.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/numerical/linear_solvers.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/heat_method_distance.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/surface_point.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/surface_point.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/trace_geodesic.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/affine_remapper.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/color_maps.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/color_management.h \
@@ -758,14 +766,18 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../deps/glm/glm/detail/func_integer.inl \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/types.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/affine_remapper.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/polyscope.h \
+ /usr/include/c++/11/set /usr/include/c++/11/bits/stl_set.h \
+ /usr/include/c++/11/bits/stl_multiset.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/deps/imgui/imgui/imgui.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/deps/imgui/imgui/imconfig.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/group.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/structure.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/persistent_value.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/scaled_value.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/materials.h \
  /usr/include/c++/11/unordered_map \
  /usr/include/c++/11/bits/unordered_map.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/managed_buffer.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/engine.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/ground_plane.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/view.h \
@@ -789,8 +801,6 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/standardize_data_array.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/messages.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/camera_parameters.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/deps/imgui/imgui/imgui.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/deps/imgui/imgui/imconfig.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../deps/glm/glm/gtc/type_ptr.hpp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../deps/glm/glm/gtc/../gtc/quaternion.hpp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../deps/glm/glm/gtc/../gtc/../ext/vector_relational.hpp \
@@ -840,35 +850,41 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../deps/glm/glm/gtx/../gtx/../detail/setup.hpp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../deps/glm/glm/gtx/../gtx/component_wise.inl \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../deps/glm/glm/gtx/norm.inl \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/weak_handle.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/managed_buffer.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/quantity.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/structure.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/transformation_gizmo.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/widget.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/weak_handle.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/managed_buffer.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/render/managed_buffer.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/structure.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/polyscope.h \
- /usr/include/c++/11/set /usr/include/c++/11/bits/stl_set.h \
- /usr/include/c++/11/bits/stl_multiset.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/group.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/quantity.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/floating_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/internal.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/options.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/screenshot.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/slice_plane.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/floating_quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_color_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_color_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/color_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/color_quantity.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_parameterization_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/histogram.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_parameterization_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/parameterization_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/parameterization_quantity.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_scalar_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_scalar_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/scalar_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/scalar_quantity.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_vector_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_vector_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/vector_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/vector_quantity.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh.ipp \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/direction_fields.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_color_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_parameterization_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_scalar_quantity.h \
+ /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud_vector_quantity.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/point_cloud.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_position_geometry.h \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/neighborhoods.h \
@@ -877,20 +893,7 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_element_types.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud.ipp \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/edge_length_geometry.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_heat_solver.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/numerical/linear_solvers.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/heat_method_distance.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/surface_point.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/surface/surface_point.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/geometry-central/src/../include/geometrycentral/pointcloud/point_cloud_io.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh_quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_color_quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_parameterization_quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_scalar_quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_vector_quantity.h \
- /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/src/../include/polyscope/surface_mesh.ipp \
  /home/guilherme/Documents/gc-polyscope-connection-laplace/deps/polyscope/deps/args/args/args.hxx \
  /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h

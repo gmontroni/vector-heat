@@ -1,5 +1,8 @@
 #include "geometrycentral/surface/meshio.h"
 #include "geometrycentral/surface/vertex_position_geometry.h"
+#include "geometrycentral/surface/vector_heat_method.h"
+#include "polyscope/surface_mesh.h"
+#include "geometrycentral/surface/direction_fields.h"
 
 #include "polyscope/point_cloud.h"
 #include "geometrycentral/pointcloud/point_position_geometry.h"
@@ -7,9 +10,9 @@
 #include "geometrycentral/pointcloud/point_cloud_io.h"
 
 #include "polyscope/polyscope.h"
-#include "polyscope/surface_mesh.h"
 
-// #include <iostream>
+#include <iostream>
+#include <typeinfo>
 #include <fstream>
 #include <cstdlib> // getenv
 #include "args/args.hxx"
@@ -26,6 +29,10 @@ std::unique_ptr<VertexPositionGeometry> geometry;
 // == Geometry-central data (Points Cloud)
 std::unique_ptr<PointCloud> cloud;
 std::unique_ptr<PointPositionGeometry> point_geometry;
+
+// == Geometry-central data (Tufted Mesh)
+std::unique_ptr<SurfaceMesh> tuftedMesh;
+std::unique_ptr<EdgeLengthGeometry> tuftedGeom;
 
 // Polyscope visualization handle, to quickly add data to the surface
 polyscope::SurfaceMesh *psMesh;
@@ -71,34 +78,29 @@ int main(int argc, char **argv) {
 
   // Set normals
   point_geometry->requireNormals();
-  PointData<Vector3> vNormals(*cloud);
+  PointData<Vector3> pNormals(*cloud);
   for (Point p : cloud->points()) {
-    vNormals[p] = point_geometry->normals[p];
+    pNormals[p] = point_geometry->normals[p];
     // std::cout << "normal for point " << p << " is " << point_geometry->normals[p] << "\n";
   }
 
   // Set tangent basis
   point_geometry->requireTangentBasis();
-  PointData<Vector3> vBasisX(*cloud);
-  PointData<Vector3> vBasisY(*cloud);
+  PointData<Vector3> pBasisX(*cloud);
+  PointData<Vector3> pBasisY(*cloud);
   for (Point p : cloud->points()) {
-    vBasisX[p] = point_geometry->tangentBasis[p][0];
-    vBasisY[p] = point_geometry->tangentBasis[p][1];
+    pBasisX[p] = point_geometry->tangentBasis[p][0];
+    pBasisY[p] = point_geometry->tangentBasis[p][1];
     // std::cout << "basis x for point " << p << " is " << point_geometry->tangentBasis[p][0] << "\n";
   }
 
-  // Create the solver
-  double tCoef = 1.0;
-  PointCloudHeatSolver solver(*cloud, *point_geometry, tCoef);
+  // Create the solver (Points Cloud)
+  // double tCoef = 1.0;
+  // PointCloudHeatSolver PCHsolver(*cloud, *point_geometry, tCoef);
+  PointCloudHeatSolver pchSolver(*cloud, *point_geometry); // default tCoef = 1.0
 
-  // // Compute a timescale
-  // double meanEdgeLength = 0.;
-  // double shortTime = 0.0;
-  // for (surface::Edge e : point_geometry->tuftedMesh->edges()) {
-  //   meanEdgeLength += point_geometry->tuftedGeom->edgeLengths[e];
-  // }
-  // meanEdgeLength /= point_geometry->tuftedMesh->nEdges();
-  // shortTime = tCoef * meanEdgeLength * meanEdgeLength;
+  // construct a solver (Mesh)
+  VectorHeatMethodSolver vhmSolver(*geometry);
 
   // Set laplacian
   point_geometry->requireLaplacian();
@@ -119,12 +121,16 @@ int main(int argc, char **argv) {
   // vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp));
 
   // Pick a source point
-  Point pSource = cloud->point(7);
+  Point pSource = cloud->point(0);
 
   // Compute parallel transport
-  Vector2 sourceVec{1, 1};
-  PointData<Vector2> transport = solver.transportTangentVector(pSource, sourceVec);
- 
+  Vector2 sourcePoint{1, 2};
+  PointData<Vector2> pchTransport = pchSolver.transportTangentVector(pSource, sourcePoint);
+
+  Vertex vSource = mesh->vertex(0);
+  Vector2 sourceVecMesh{1, 2};
+  VertexData<Vector2> vhmTransport = vhmSolver.transportTangentVector(vSource, sourceVecMesh);
+
   // get home directory
   std::string homeDir = getenv("HOME");
   std::string filePath = homeDir + "/Documents/Parallel Transport/verification";
@@ -132,11 +138,47 @@ int main(int argc, char **argv) {
   std::string lPath = filePath + "/laplacian_matrix.txt";
   std::string cLPath = filePath + "/connection_laplacian_matrix.txt";
 
+  // read an initial field (X0) from file
+  std::string line;
+  std::ifstream
+  file(filePath + "/X0.txt");
+  std::vector<Vector2> X0;
+  if (file.is_open()) {
+      while (std::getline(file, line)) {
+          std::istringstream iss(line);
+          double x, y;
+          iss >> x >> y;
+          X0.push_back(Vector2{x, y});
+      }
+      file.close();
+  } else {
+      std::cerr << "Unable to open file for reading" << std::endl;
+  }
+
+  // create a vector of tuples with points and vectors
+  // std::vector<std::tuple<Point, Vector2>> sources;
+  // for (size_t i = 0; i < cloud->nPoints(); i++) {
+  //     sources.push_back(std::make_tuple(cloud->point(i), X0[i]));
+  // }
+
+  std::vector<std::tuple<Point, Vector2>> sources;
+  for (size_t i = 0; i < 47; i++) {
+      sources.push_back(std::make_tuple(cloud->point(i), X0[i]));
+  }
+
+  // VertexData<Vector2> dField = computeSmoothestVertexDirectionField(*geometry);
+  // std::vector<std::tuple<Point, Vector2>> sources;
+  // for (size_t i = 0; i < cloud->nPoints(); i++) {
+  //     sources.push_back(std::make_tuple(cloud->point(i), dField[i]));
+  // }
+
+  PointData<Vector2> X = pchSolver.transportTangentVectors(sources);
+
   // save basis X to file
   std::ofstream basisXFile(filePath + "/basisX.txt");
   if (basisXFile.is_open()) {
       for (Point p : cloud->points()) {
-          Vector3 basisX = vBasisX[p];
+          Vector3 basisX = pBasisX[p];
           basisXFile << basisX.x << " " << basisX.y << " " << basisX.z << "\n";
       }
       basisXFile.close();
@@ -148,7 +190,7 @@ int main(int argc, char **argv) {
   std::ofstream basisYFile(filePath + "/basisY.txt");
   if (basisYFile.is_open()) {
       for (Point p : cloud->points()) {
-          Vector3 basisY = vBasisY[p];
+          Vector3 basisY = pBasisY[p];
           basisYFile << basisY.x << " " << basisY.y << " " << basisY.z << "\n";
       }
       basisYFile.close();
@@ -160,7 +202,7 @@ int main(int argc, char **argv) {
   std::ofstream normalFile(normalPath);
   if (normalFile.is_open()) {
       for (Point p : cloud->points()) {
-          Vector3 normal = vNormals[p];
+          Vector3 normal = pNormals[p];
           normalFile << normal.x << " " << normal.y << " " << normal.z << "\n";
       }
       normalFile.close();
@@ -220,10 +262,43 @@ int main(int argc, char **argv) {
       std::cerr << "Unable to open file for writing" << std::endl;
   }
 
-  psMesh->addVertexTangentVectorQuantity("Parallel Transport", transport, vBasisX, vBasisY);
-  psMesh->addVertexVectorQuantity("Normal", vNormals);
-  psMesh->addVertexVectorQuantity("Basis X", vBasisX);
-  psMesh->addVertexVectorQuantity("Basis Y", vBasisY);
+  // Tufted triangulation
+  point_geometry->requireTuftedTriangulation();
+  auto& tuftedMesh = point_geometry->tuftedMesh;
+  auto& tuftedGeom = point_geometry->tuftedGeom;
+  std::vector<Eigen::Vector3d> vertexPositions;
+  for (Vertex v : tuftedMesh->vertices()) {
+      auto pos = geometry->inputVertexPositions[v];
+      vertexPositions.push_back(Eigen::Vector3d(pos.x, pos.y, pos.z));
+  }
+  std::vector<std::vector<size_t>> faceVertexList;
+  for (Face f : tuftedMesh->faces()) {
+      std::vector<size_t> face;
+      for (Vertex v : f.adjacentVertices()) {
+          face.push_back(v.getIndex());
+      }
+      faceVertexList.push_back(face);
+  }
+
+  // Set vertex tangent spaces
+  geometry->requireVertexTangentBasis();
+  VertexData<Vector3> vBasisX(*mesh);
+  VertexData<Vector3> vBasisY(*mesh);
+  for (Vertex v : mesh->vertices()) {
+    vBasisX[v] = geometry->vertexTangentBasis[v][0];
+    vBasisY[v] = geometry->vertexTangentBasis[v][1];
+  }
+
+  // Tufted triangulation plot
+  polyscope::registerSurfaceMesh("Tufted Triangulation", vertexPositions, faceVertexList);
+
+  psMesh->addVertexTangentVectorQuantity("Parallel Transport with points cloud", pchTransport, pBasisX, pBasisY);
+  psMesh->addVertexTangentVectorQuantity("Parallel Transport with mesh", vhmTransport, vBasisX, vBasisY);
+  psMesh->addVertexTangentVectorQuantity("X0", X0, pBasisX, pBasisY);
+  psMesh->addVertexTangentVectorQuantity("X", X, pBasisX, pBasisY);
+  psMesh->addVertexVectorQuantity("Normal", pNormals);
+  psMesh->addVertexVectorQuantity("Basis X", pBasisX);
+  psMesh->addVertexVectorQuantity("Basis Y", pBasisY);
 
   // Give control to the polyscope gui
   polyscope::show();

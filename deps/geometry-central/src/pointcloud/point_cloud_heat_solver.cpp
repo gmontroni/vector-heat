@@ -123,45 +123,6 @@ PointData<Vector2> PointCloudHeatSolver::transportTangentVector(const Point& sou
   return transportTangentVectors({std::make_tuple(sourcePoint, sourceVector)});
 }
 
-Vector<std::complex<double>>
-PointCloudHeatSolver::transportTangentVectorsGM(const std::vector<std::tuple<Point, Vector2>>& sources) {
-
-  GC_SAFETY_ASSERT(sources.size() != 0, "must have at least one source");
-
-  ensureHaveVectorHeatSolver();
-
-  // Y0
-  // Construct rhs
-  size_t N = cloud.nPoints(); // número de pontos da nuvem
-  Vector<std::complex<double>> dirRHS = Vector<std::complex<double>>::Zero(N); // vetor complexo de zeros (rhs)
-  bool normsAllSame = true; // flag para verificar se todas as normas são iguais
-  double firstNorm = std::get<1>(sources[0]).norm(); // calcula a norma do primeiro vetor tangente
-  for (size_t i = 0; i < sources.size(); i++) {
-    size_t ind = std::get<0>(sources[i]).getIndex(); // obtém o índice do ponto
-    Vector2 vec = std::get<1>(sources[i]);  // obtém o vetor tangente
-    dirRHS(ind) += std::complex<double>(vec); // adiciona o vetor tangente como complexo ao rhs
-
-    // Check if all norms same
-    double thisNorm = vec.norm();
-    if (std::abs(firstNorm - thisNorm) > std::fmax(firstNorm, thisNorm) * 1e-10) {
-      normsAllSame = false;
-    }
-  }
-  std::string homeDir = getenv("HOME");
-  std::string filePath = homeDir + "/Documents/Parallel Transport/verification";
-  std::ofstream dirRHSFile(filePath + "/Y0complex.txt");
-  if (dirRHSFile.is_open()) {
-      for (size_t i = 0; i < N; i++) {
-          dirRHSFile << dirRHS[i].real() << " " << dirRHS[i].imag() << "\n";
-      }
-      dirRHSFile.close();
-  } else {
-      std::cerr << "Unable to open file for writing dirRHS" << std::endl;
-  }
-
-  return dirRHS;
-}
-
 PointData<Vector2>
 PointCloudHeatSolver::transportTangentVectors(const std::vector<std::tuple<Point, Vector2>>& sources) {
 
@@ -171,14 +132,14 @@ PointCloudHeatSolver::transportTangentVectors(const std::vector<std::tuple<Point
 
   // Y0
   // Consturct rhs
-  size_t N = cloud.nPoints(); // números de pontos da nuvem
-  Vector<std::complex<double>> dirRHS = Vector<std::complex<double>>::Zero(N); // vetor complexo de zeros (rhs)
-  bool normsAllSame = true; // flag para verificar se todas as normas são iguais
-  double firstNorm = std::get<1>(sources[0]).norm(); // calcula a norma do primeiro vetor tangente
+  size_t N = cloud.nPoints();                                                   // número de pontos da nuvem
+  Vector<std::complex<double>> dirRHS = Vector<std::complex<double>>::Zero(N);  // vetor complexo de zeros (rhs)
+  bool normsAllSame = true;                                                     // flag para verificar se todas as normas são iguais
+  double firstNorm = std::get<1>(sources[0]).norm();                            // calcula a norma do primeiro vetor tangente
   for (size_t i = 0; i < sources.size(); i++) {
-    size_t ind = std::get<0>(sources[i]).getIndex(); // obtém o índice do ponto
-    Vector2 vec = std::get<1>(sources[i]);  // obtém o vetor tangente
-    dirRHS(ind) += std::complex<double>(vec); // adiciona o vetor tangente como complexo ao rhs
+    size_t ind = std::get<0>(sources[i]).getIndex();                            // obtém o índice do ponto
+    Vector2 vec = std::get<1>(sources[i]);                                      // obtém o vetor tangente
+    dirRHS(ind) += std::complex<double>(vec);                                   // adiciona o vetor tangente como complexo ao rhs
 
     // Check if all norms same
     double thisNorm = vec.norm();
@@ -186,7 +147,6 @@ PointCloudHeatSolver::transportTangentVectors(const std::vector<std::tuple<Point
       normsAllSame = false;
     }
   }
-
 
   // Transport
   // Result is 2N packed complex
@@ -249,6 +209,18 @@ PointCloudHeatSolver::transportTangentVectors(const std::vector<std::tuple<Point
   PointData<Vector2> result(cloud);
   for (size_t i = 0; i < N; i++) {
     result[i] = Vector2::fromComplex(dirInterp(i));
+  }
+
+  // save result to file
+  std::ofstream
+  resultFile(filePath + "/X.txt"); 
+  if (resultFile.is_open()) { 
+      for (size_t i = 0; i < N; i++) { 
+          resultFile << result[i].x << " " << result[i].y << "\n"; 
+      }
+      resultFile.close(); 
+  } else { 
+      std::cerr << "Unable to open file for writing result" << std::endl;
   }
 
   return result;

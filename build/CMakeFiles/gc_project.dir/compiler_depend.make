@@ -674,7 +674,15 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
   ../deps/geometry-central/include/geometrycentral/utilities/vector3.ipp \
   ../deps/geometry-central/include/geometrycentral/utilities/vector2.ipp \
   ../deps/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp \
-  ../deps/polyscope/include/polyscope/point_cloud.h \
+  ../deps/geometry-central/include/geometrycentral/surface/vector_heat_method.h \
+  ../deps/geometry-central/include/geometrycentral/numerical/linear_solvers.h \
+  ../deps/geometry-central/include/geometrycentral/surface/heat_method_distance.h \
+  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h \
+  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp \
+  ../deps/geometry-central/include/geometrycentral/surface/surface_point.h \
+  ../deps/geometry-central/include/geometrycentral/surface/surface_point.ipp \
+  ../deps/geometry-central/include/geometrycentral/surface/trace_geodesic.h \
+  ../deps/polyscope/include/polyscope/surface_mesh.h \
   ../deps/polyscope/include/polyscope/affine_remapper.h \
   ../deps/polyscope/include/polyscope/render/color_maps.h \
   ../deps/polyscope/include/polyscope/color_management.h \
@@ -821,14 +829,19 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
   ../deps/polyscope/deps/glm/glm/detail/func_integer.inl \
   ../deps/polyscope/include/polyscope/types.h \
   ../deps/polyscope/include/polyscope/affine_remapper.ipp \
+  ../deps/polyscope/include/polyscope/polyscope.h \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h \
+  ../deps/polyscope/deps/imgui/imgui/imgui.h \
+  ../deps/polyscope/deps/imgui/imgui/imconfig.h \
+  ../deps/polyscope/include/polyscope/group.h \
+  ../deps/polyscope/include/polyscope/structure.h \
   ../deps/polyscope/include/polyscope/persistent_value.h \
   ../deps/polyscope/include/polyscope/scaled_value.h \
   ../deps/polyscope/include/polyscope/render/materials.h \
   /usr/include/c++/11/unordered_map \
   /usr/include/c++/11/bits/unordered_map.h \
-  ../deps/polyscope/include/polyscope/point_cloud_quantity.h \
-  ../deps/polyscope/include/polyscope/quantity.h \
-  ../deps/polyscope/include/polyscope/render/managed_buffer.h \
   ../deps/polyscope/include/polyscope/render/engine.h \
   ../deps/polyscope/include/polyscope/render/ground_plane.h \
   ../deps/polyscope/include/polyscope/view.h \
@@ -852,8 +865,6 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
   ../deps/polyscope/include/polyscope/standardize_data_array.h \
   ../deps/polyscope/include/polyscope/messages.h \
   ../deps/polyscope/include/polyscope/camera_parameters.ipp \
-  ../deps/polyscope/deps/imgui/imgui/imgui.h \
-  ../deps/polyscope/deps/imgui/imgui/imconfig.h \
   ../deps/polyscope/deps/glm/glm/gtc/type_ptr.hpp \
   ../deps/polyscope/deps/glm/glm/gtc/quaternion.hpp \
   ../deps/polyscope/deps/glm/glm/ext/vector_relational.hpp \
@@ -903,36 +914,41 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
   ../deps/polyscope/deps/glm/glm/detail/setup.hpp \
   ../deps/polyscope/deps/glm/glm/gtx/component_wise.inl \
   ../deps/polyscope/deps/glm/glm/gtx/norm.inl \
-  ../deps/polyscope/include/polyscope/weak_handle.h \
-  ../deps/polyscope/include/polyscope/render/managed_buffer.ipp \
-  ../deps/polyscope/include/polyscope/quantity.ipp \
-  ../deps/polyscope/include/polyscope/structure.h \
   ../deps/polyscope/include/polyscope/transformation_gizmo.h \
   ../deps/polyscope/include/polyscope/widget.h \
+  ../deps/polyscope/include/polyscope/weak_handle.h \
+  ../deps/polyscope/include/polyscope/render/managed_buffer.h \
+  ../deps/polyscope/include/polyscope/render/managed_buffer.ipp \
   ../deps/polyscope/include/polyscope/structure.ipp \
-  ../deps/polyscope/include/polyscope/polyscope.h \
-  /usr/include/c++/11/set \
-  /usr/include/c++/11/bits/stl_set.h \
-  /usr/include/c++/11/bits/stl_multiset.h \
-  ../deps/polyscope/include/polyscope/group.h \
+  ../deps/polyscope/include/polyscope/quantity.h \
+  ../deps/polyscope/include/polyscope/quantity.ipp \
+  ../deps/polyscope/include/polyscope/floating_quantity.h \
   ../deps/polyscope/include/polyscope/internal.h \
   ../deps/polyscope/include/polyscope/options.h \
   ../deps/polyscope/include/polyscope/screenshot.h \
   ../deps/polyscope/include/polyscope/slice_plane.h \
-  ../deps/polyscope/include/polyscope/floating_quantity.h \
-  ../deps/polyscope/include/polyscope/point_cloud_color_quantity.h \
+  ../deps/polyscope/include/polyscope/surface_mesh_quantity.h \
+  ../deps/polyscope/include/polyscope/surface_color_quantity.h \
   ../deps/polyscope/include/polyscope/color_quantity.h \
   ../deps/polyscope/include/polyscope/color_quantity.ipp \
+  ../deps/polyscope/include/polyscope/surface_parameterization_quantity.h \
   ../deps/polyscope/include/polyscope/histogram.h \
-  ../deps/polyscope/include/polyscope/point_cloud_parameterization_quantity.h \
   ../deps/polyscope/include/polyscope/parameterization_quantity.h \
   ../deps/polyscope/include/polyscope/parameterization_quantity.ipp \
-  ../deps/polyscope/include/polyscope/point_cloud_scalar_quantity.h \
+  ../deps/polyscope/include/polyscope/surface_scalar_quantity.h \
   ../deps/polyscope/include/polyscope/scalar_quantity.h \
   ../deps/polyscope/include/polyscope/scalar_quantity.ipp \
-  ../deps/polyscope/include/polyscope/point_cloud_vector_quantity.h \
+  ../deps/polyscope/include/polyscope/surface_vector_quantity.h \
   ../deps/polyscope/include/polyscope/vector_quantity.h \
   ../deps/polyscope/include/polyscope/vector_quantity.ipp \
+  ../deps/polyscope/include/polyscope/surface_mesh.ipp \
+  ../deps/geometry-central/include/geometrycentral/surface/direction_fields.h \
+  ../deps/polyscope/include/polyscope/point_cloud.h \
+  ../deps/polyscope/include/polyscope/point_cloud_quantity.h \
+  ../deps/polyscope/include/polyscope/point_cloud_color_quantity.h \
+  ../deps/polyscope/include/polyscope/point_cloud_parameterization_quantity.h \
+  ../deps/polyscope/include/polyscope/point_cloud_scalar_quantity.h \
+  ../deps/polyscope/include/polyscope/point_cloud_vector_quantity.h \
   ../deps/polyscope/include/polyscope/point_cloud.ipp \
   ../deps/geometry-central/include/geometrycentral/pointcloud/point_position_geometry.h \
   ../deps/geometry-central/include/geometrycentral/pointcloud/neighborhoods.h \
@@ -941,21 +957,8 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
   ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_logic_templates.ipp \
   ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_element_types.ipp \
   ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.ipp \
-  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h \
-  ../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp \
   ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_heat_solver.h \
-  ../deps/geometry-central/include/geometrycentral/numerical/linear_solvers.h \
-  ../deps/geometry-central/include/geometrycentral/surface/heat_method_distance.h \
-  ../deps/geometry-central/include/geometrycentral/surface/surface_point.h \
-  ../deps/geometry-central/include/geometrycentral/surface/surface_point.ipp \
   ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_io.h \
-  ../deps/polyscope/include/polyscope/surface_mesh.h \
-  ../deps/polyscope/include/polyscope/surface_mesh_quantity.h \
-  ../deps/polyscope/include/polyscope/surface_color_quantity.h \
-  ../deps/polyscope/include/polyscope/surface_parameterization_quantity.h \
-  ../deps/polyscope/include/polyscope/surface_scalar_quantity.h \
-  ../deps/polyscope/include/polyscope/surface_vector_quantity.h \
-  ../deps/polyscope/include/polyscope/surface_mesh.ipp \
   ../deps/polyscope/deps/args/args/args.hxx \
   /usr/include/c++/11/iterator \
   /usr/include/c++/11/bits/stream_iterator.h
@@ -963,23 +966,7 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stream_iterator.h:
 
-../deps/polyscope/include/polyscope/surface_mesh.ipp:
-
-../deps/polyscope/include/polyscope/surface_scalar_quantity.h:
-
-../deps/polyscope/include/polyscope/surface_color_quantity.h:
-
-../deps/polyscope/include/polyscope/surface_mesh_quantity.h:
-
 ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud_io.h:
-
-../deps/geometry-central/include/geometrycentral/surface/surface_point.ipp:
-
-../deps/geometry-central/include/geometrycentral/surface/heat_method_distance.h:
-
-../deps/geometry-central/include/geometrycentral/numerical/linear_solvers.h:
-
-../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h:
 
 ../deps/geometry-central/include/geometrycentral/pointcloud/point_cloud.ipp:
 
@@ -995,29 +982,33 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../deps/polyscope/include/polyscope/point_cloud_scalar_quantity.h:
 
-../deps/polyscope/include/polyscope/parameterization_quantity.h:
-
 ../deps/polyscope/include/polyscope/point_cloud_parameterization_quantity.h:
 
+../deps/geometry-central/include/geometrycentral/surface/direction_fields.h:
+
+../deps/polyscope/include/polyscope/surface_mesh.ipp:
+
+../deps/polyscope/include/polyscope/surface_scalar_quantity.h:
+
+../deps/polyscope/include/polyscope/parameterization_quantity.h:
+
 ../deps/polyscope/include/polyscope/color_quantity.h:
+
+../deps/polyscope/include/polyscope/surface_color_quantity.h:
+
+../deps/polyscope/include/polyscope/surface_mesh_quantity.h:
 
 ../deps/polyscope/include/polyscope/options.h:
 
 ../deps/polyscope/include/polyscope/internal.h:
 
-../deps/polyscope/include/polyscope/group.h:
+../deps/polyscope/include/polyscope/quantity.ipp:
 
-/usr/include/c++/11/bits/stl_multiset.h:
-
-/usr/include/c++/11/bits/stl_set.h:
+../deps/polyscope/include/polyscope/quantity.h:
 
 ../deps/polyscope/include/polyscope/widget.h:
 
 ../deps/polyscope/include/polyscope/transformation_gizmo.h:
-
-../deps/polyscope/include/polyscope/structure.h:
-
-../deps/polyscope/include/polyscope/quantity.ipp:
 
 ../deps/polyscope/deps/glm/glm/gtx/norm.inl:
 
@@ -1097,11 +1088,17 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../deps/polyscope/include/polyscope/render/engine.h:
 
-../deps/polyscope/include/polyscope/quantity.h:
-
 /usr/include/c++/11/unordered_map:
 
 ../deps/polyscope/include/polyscope/render/materials.h:
+
+../deps/polyscope/include/polyscope/structure.h:
+
+../deps/polyscope/include/polyscope/group.h:
+
+/usr/include/c++/11/bits/stl_multiset.h:
+
+/usr/include/c++/11/bits/stl_set.h:
 
 ../deps/polyscope/include/polyscope/affine_remapper.ipp:
 
@@ -1245,8 +1242,6 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../deps/polyscope/deps/glm/glm/ext/vector_float3_precision.hpp:
 
-../deps/polyscope/deps/glm/glm/ext/vector_bool3_precision.hpp:
-
 ../deps/polyscope/deps/glm/glm/ext/matrix_double4x4_precision.hpp:
 
 ../deps/polyscope/deps/glm/glm/detail/type_vec3.inl:
@@ -1296,6 +1291,20 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 ../deps/polyscope/deps/glm/glm/gtc/matrix_access.inl:
 
 ../deps/polyscope/include/polyscope/render/color_maps.h:
+
+../deps/polyscope/deps/glm/glm/ext/vector_bool3_precision.hpp:
+
+../deps/geometry-central/include/geometrycentral/surface/trace_geodesic.h:
+
+../deps/geometry-central/include/geometrycentral/surface/surface_point.ipp:
+
+../deps/geometry-central/include/geometrycentral/surface/edge_length_geometry.h:
+
+../deps/geometry-central/include/geometrycentral/surface/heat_method_distance.h:
+
+../deps/geometry-central/include/geometrycentral/numerical/linear_solvers.h:
+
+../deps/geometry-central/include/geometrycentral/surface/vector_heat_method.h:
 
 ../deps/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp:
 
@@ -2707,9 +2716,9 @@ CMakeFiles/gc_project.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseBinaryOp.h:
 
-../deps/polyscope/include/polyscope/surface_parameterization_quantity.h:
-
 ../deps/polyscope/include/polyscope/point_cloud.h:
+
+../deps/polyscope/include/polyscope/surface_parameterization_quantity.h:
 
 /usr/include/eigen3/Eigen/src/SparseCore/SparseBlock.h:
 
