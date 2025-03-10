@@ -121,17 +121,17 @@ int main(int argc, char **argv) {
   // vectorHeatSolver.reset(new PositiveDefiniteSolver<double>(vectorOp));
   
   // Compute parallel transport (Points Cloud) 
-  Point pSource = cloud->point(587);
-  Vector2 sourcePoint{0.580121756, 0.814529777};
+  Point pSource = cloud->point(600);
+  Vector2 sourcePoint{-0.0683853626, 0.997658968};
   PointData<Vector2> pchTransport = pchSolver.transportTangentVector(pSource, sourcePoint);  // Only one source point
 
   PointData<Vector2> initialVec(*cloud);
   initialVec[pSource] = sourcePoint;
 
-  // Compute parallel transport (Mesh)
-  Vertex vSource = mesh->vertex(0);
-  Vector2 sourceVecMesh{1, 2};
-  VertexData<Vector2> vhmTransport = vhmSolver.transportTangentVector(vSource, sourceVecMesh);  // Only one source vertex
+  // // Compute parallel transport (Mesh)
+  // Vertex vSource = mesh->vertex(0);
+  // Vector2 sourceVecMesh{1, 2};
+  // VertexData<Vector2> vhmTransport = vhmSolver.transportTangentVector(vSource, sourceVecMesh);  // Only one source vertex
 
   // Pick some source points
   std::vector<std::vector<Point>> idxs;
@@ -191,6 +191,25 @@ int main(int argc, char **argv) {
 
   // Compute Direction Field (Mesh)
   VertexData<Vector2> directions = computeSmoothestVertexDirectionField(*geometry);
+
+  PointData<double> error(*cloud);
+  for (Point p : cloud->points()) {
+      // Point p = cloud->point(p.getIndex());
+      Vector2 cns = pchTransport[p];                    // Campo não suavizado
+      Vector2 cs = pchTransportSourcesPoints[p];         // Campo suavizado
+      double dotProduct = cns.x * cs.x + cns.y * cs.y;  // Produto escalar
+      error[p] = std::abs(1 - dotProduct);               // Erro
+  }
+
+  // // Compute error abs(1 - dot product) of the directions elements VertexData<Vector2> with the parallel transport elements PointData<Vector2> of each point
+  // VertexData<double> error(*mesh); // Inicialize o VertexData para armazenar o erro
+  // for (Vertex v : mesh->vertices()) {
+  //     Vector2 direction = directions[v];
+  //     Point p = cloud->point(v.getIndex()); // Supondo que o índice do vértice corresponda ao ponto
+  //     Vector2 transport = pchTransportSourcesPoints[p];
+  //     double dotProduct = direction.x * transport.x + direction.y * transport.y;
+  //     error[v] = std::abs(1 - dotProduct);
+  // }
 
   // get home directory
   std::string homeDir = getenv("HOME");
@@ -350,9 +369,9 @@ int main(int argc, char **argv) {
   
   // Add fields to the surface
   psMesh->addVertexTangentVectorQuantity("Direction Field", directions, vBasisX, vBasisY);
-  psMesh->addVertexTangentVectorQuantity("Parallel Transport with points cloud", pchTransport, pBasisX, pBasisY);
+  psMesh->addVertexTangentVectorQuantity("Parallel Transport with one vector", pchTransport, pBasisX, pBasisY);
   psMesh->addVertexTangentVectorQuantity("Parallel Transport with sources points", pchTransportSourcesPoints, pBasisX, pBasisY);
-  psMesh->addVertexTangentVectorQuantity("Parallel Transport with mesh", vhmTransport, vBasisX, vBasisY);
+  // psMesh->addVertexTangentVectorQuantity("Parallel Transport with mesh", vhmTransport, vBasisX, vBasisY);
   psMesh->addVertexTangentVectorQuantity("Sources Points", field, pBasisX, pBasisY);
   psMesh->addVertexTangentVectorQuantity("Parallel Transport with Random Vectors", pchTransportRandSources, pBasisX, pBasisY);
   psMesh->addVertexTangentVectorQuantity("Único Vec", initialVec, pBasisX, pBasisY); 
@@ -362,6 +381,7 @@ int main(int argc, char **argv) {
   psMesh->addVertexVectorQuantity("Normal", pNormals);
   psMesh->addVertexVectorQuantity("Basis X", pBasisX);
   psMesh->addVertexVectorQuantity("Basis Y", pBasisY);
+  psMesh->addVertexScalarQuantity("Error", error);
 
   // Give control to the polyscope gui
   polyscope::show();
