@@ -95,8 +95,8 @@ int main(int argc, char **argv) {
   }
 
   // Create the solver (Points Cloud)
-  double tCoef = 1.0;
-  PointCloudHeatSolver pchSolver(*cloud, *point_geometry, tCoef);
+  // double tCoef = 1.0;
+  PointCloudHeatSolver pchSolver(*cloud, *point_geometry, 1.0);
   // PointCloudHeatSolver pchSolver(*cloud, *point_geometry); // default tCoef = 1.0
 
   // construct a solver (Mesh)
@@ -124,6 +124,23 @@ int main(int argc, char **argv) {
   Point pSource = cloud->point(600);
   Vector2 sourcePoint{-0.0683853626, 0.997658968};
   PointData<Vector2> pchTransport = pchSolver.transportTangentVector(pSource, sourcePoint);  // Only one source point
+
+  // Smoothing test
+  // PointCloudHeatSolver pchSolversm(*cloud, *point_geometry, 1.0);
+  // PointCloudHeatSolver pchSolversmo(*cloud, *point_geometry, 0.001);
+
+  // PointData<Vector2> pchTransportsm = pchSolversm.transportTangentVector(cloud->point(600), Vector2{-0.0683853626, 0.997658968});
+  // PointData<Vector2> pchTransportsmo = pchSolversmo.transportTangentVector(cloud->point(600), Vector2{-0.0683853626, 0.997658968});
+
+  // PointData<double> smoError(*cloud);
+  // for (Point p : cloud->points()) {
+  //     // Point p = cloud->point(p.getIndex());
+  //     Vector2 cns = pchTransportsm[p];                      // Campo não suavizado
+  //     Vector2 cs = pchTransportsmo[p];                      // Campo suavizado
+  //     double dotProduct = cns.x * cs.x + cns.y * cs.y;      // Produto escalar
+  //     smoError[p] = std::abs(1 - dotProduct);               // Erro
+  // }
+  //
 
   PointData<Vector2> initialVec(*cloud);
   initialVec[pSource] = sourcePoint;
@@ -378,10 +395,13 @@ int main(int argc, char **argv) {
   psMesh->addVertexTangentVectorQuantity("Random Vectors", fieldrand, pBasisX, pBasisY);
   // psMesh->addVertexTangentVectorQuantity("X0", X0, pBasisX, pBasisY);
   // psMesh->addVertexTangentVectorQuantity("X", X, pBasisX, pBasisY);
+  // psMesh->addVertexTangentVectorQuantity("Standard Smoothing", pchTransportsm, pBasisX, pBasisY);
+  // psMesh->addVertexTangentVectorQuantity("0.001 Smoothing", pchTransportsmo, pBasisX, pBasisY);
   psMesh->addVertexVectorQuantity("Normal", pNormals);
   psMesh->addVertexVectorQuantity("Basis X", pBasisX);
   psMesh->addVertexVectorQuantity("Basis Y", pBasisY);
   psMesh->addVertexScalarQuantity("Error", error);
+  // psMesh->addVertexScalarQuantity("Smoothing Error", smoError);
 
   // Give control to the polyscope gui
   polyscope::show();

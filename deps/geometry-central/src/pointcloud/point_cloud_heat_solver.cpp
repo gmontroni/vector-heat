@@ -27,6 +27,10 @@ PointCloudHeatSolver::PointCloudHeatSolver(PointCloud& cloud_, PointPositionGeom
   }
   meanEdgeLength /= geom.tuftedMesh->nEdges();
   shortTime = tCoef * meanEdgeLength * meanEdgeLength;
+  // double shortTime = 0.00444667;
+
+  // print shortTime
+  std::cout << "shortTime: " << shortTime << std::endl;
 }
 
 void PointCloudHeatSolver::ensureHaveHeatDistanceWorker() {
