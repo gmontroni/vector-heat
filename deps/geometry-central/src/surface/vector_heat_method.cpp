@@ -26,6 +26,7 @@ VectorHeatMethodSolver::VectorHeatMethodSolver(IntrinsicGeometryInterface& geom_
 }
 
 
+// Heat Scalar
 void VectorHeatMethodSolver::ensureHaveScalarHeatSolver() {
   if (scalarHeatSolver != nullptr) return;
 
@@ -40,6 +41,7 @@ void VectorHeatMethodSolver::ensureHaveScalarHeatSolver() {
   geom.unrequireCotanLaplacian();
 }
 
+// Heat Vector
 void VectorHeatMethodSolver::ensureHaveVectorHeatSolver() {
   if (vectorHeatSolver != nullptr) return;
 
@@ -71,7 +73,7 @@ void VectorHeatMethodSolver::ensureHaveVectorHeatSolver() {
   geom.unrequireVertexConnectionLaplacian();
 }
 
-
+// Entender esses solvers
 void VectorHeatMethodSolver::ensureHavePoissonSolver() {
   if (poissonSolver != nullptr) return;
 
@@ -96,6 +98,7 @@ VertexData<double> VectorHeatMethodSolver::extendScalar(const std::vector<std::t
   return extendScalar(sourcePoints);
 }
 
+// Extend Scalar
 VertexData<double> VectorHeatMethodSolver::extendScalar(const std::vector<std::tuple<SurfacePoint, double>>& sources) {
   if (sources.size() == 0) {
     return VertexData<double>(mesh, std::numeric_limits<double>::quiet_NaN());
@@ -168,6 +171,7 @@ VectorHeatMethodSolver::transportTangentVectors(const std::vector<std::tuple<Ver
   return transportTangentVectors(sourcesSurf);
 }
 
+// Transport tangent vectors (Vector Heat Method)
 VertexData<Vector2>
 VectorHeatMethodSolver::transportTangentVectors(const std::vector<std::tuple<SurfacePoint, Vector2>>& sources) {
   if (sources.size() == 0) {
@@ -267,7 +271,7 @@ VectorHeatMethodSolver::transportTangentVectors(const std::vector<std::tuple<Sur
   return result;
 }
 
-
+// Map log
 VertexData<Vector2> VectorHeatMethodSolver::computeLogMap(const Vertex& sourceVert, double vertexDistanceShift) {
   geom.requireFaceAreas();
   geom.requireEdgeLengths();
@@ -350,6 +354,7 @@ VertexData<Vector2> VectorHeatMethodSolver::computeLogMap(const Vertex& sourceVe
   return result;
 }
 
+// Entender esses solvers
 VertexData<double> VectorHeatMethodSolver::scalarDiffuse(const VertexData<double>& rhs) {
   ensureHaveScalarHeatSolver();
   return VertexData<double>(mesh, scalarHeatSolver->solve(rhs.toVector()));
@@ -364,6 +369,7 @@ VertexData<double> VectorHeatMethodSolver::poissonSolve(const VertexData<double>
   ensureHavePoissonSolver();
   return VertexData<double>(mesh, poissonSolver->solve(rhs.toVector()));
 }
+//
 
 void VectorHeatMethodSolver::addVertexOutwardBall(Vertex vert, Vector<std::complex<double>>& distGradRHS) {
 
@@ -429,6 +435,7 @@ void VectorHeatMethodSolver::addVertexOutwardBall(Vertex vert, Vector<std::compl
   }
 }
 
+// Map log
 VertexData<Vector2> VectorHeatMethodSolver::computeLogMap(const SurfacePoint& sourceP) {
   geom.requireHalfedgeVectorsInVertex();
   geom.requireHalfedgeVectorsInFace();
